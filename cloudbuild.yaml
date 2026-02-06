@@ -1,20 +1,14 @@
 steps:
-  # Step 1: Install uv and build the package
   - name: 'python:3.12-slim'
     entrypoint: 'sh'
     args:
       - '-c'
       - |
-        # Download the uv binary from the official installer
+        # Use $$ to tell Cloud Build these are shell variables, not build substitutions
         curl -LsSf https://astral.sh/uv/install.sh | sh
-        # Add uv to the path for this shell session
-        export PATH="$HOME/.cargo/bin:$PATH"
+        export PATH="$$HOME/.cargo/bin:$$PATH"
         
-        # Build the package
-        uv build
-        
-        # (Optional) Run tests if you have them
-        # uv run pytest
+        /root/.cargo/bin/uv build
 
 # Store the resulting .whl and .tar.gz files
 artifacts:
