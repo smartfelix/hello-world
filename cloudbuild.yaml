@@ -10,10 +10,13 @@ steps:
   #       uv sync --frozen
   #       # Run tests through uv (this uses the created venv automatically)
   #       uv run pytest tests/
-
+  - name: 'ghcr.io/astral-sh/uv:latest'
+    entrypoint: '/uv'
+    args: ['sync', '--frozen']
+    
   # Step 2: Build the package (Wheel and SDist)
   - name: 'ghcr.io/astral-sh/uv:latest'
-    entrypoint: 'uv'
+    entrypoint: '/uv'
     args: ['build']
 
 # Store the resulting .whl and .tar.gz files
