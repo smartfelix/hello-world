@@ -4,10 +4,13 @@ steps:
     args:
       - '-c'
       - |
-        # Use $$ to tell Cloud Build these are shell variables, not build substitutions
-        curl -LsSf https://astral.sh/uv/install.sh | sh
-        export PATH="$$HOME/.cargo/bin:$$PATH"
+        # 1. Install curl (required for the installer)
+        apt-get update && apt-get install -y curl ca-certificates
         
+        # 2. Install uv
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        
+        # 3. Build using the absolute path to the uv binary
         /root/.cargo/bin/uv build
 
 # Store the resulting .whl and .tar.gz files
