@@ -19,6 +19,6 @@ steps:
 # Store the resulting .whl and .tar.gz files
 artifacts:
   objects:
-    location: 'gs://your-bucket-name/dist/'
+    location: 'gs://vertex-482922_cloudbuild/dist/'
     paths: ['dist/*']
 
