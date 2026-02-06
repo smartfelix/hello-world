@@ -1,23 +1,20 @@
 steps:
-  # Step 1: Install dependencies and run tests
-  # We use the official uv image for speed and reliability
-  # - name: 'ghcr.io/astral-sh/uv:latest'
-  #   entrypoint: 'sh'
-  #   args:
-  #     - '-c'
-  #     - |
-  #       # Sync dependencies exactly as defined in uv.lock
-  #       uv sync --frozen
-  #       # Run tests through uv (this uses the created venv automatically)
-  #       uv run pytest tests/
-  - name: 'ghcr.io/astral-sh/uv:latest'
-    entrypoint: '/uv'
-    args: ['sync', '--frozen']
-    
-  # Step 2: Build the package (Wheel and SDist)
-  - name: 'ghcr.io/astral-sh/uv:latest'
-    entrypoint: '/uv'
-    args: ['build']
+  # Step 1: Install uv and build the package
+  - name: 'python:3.12-slim'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        # Download the uv binary from the official installer
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        # Add uv to the path for this shell session
+        export PATH="$HOME/.cargo/bin:$PATH"
+        
+        # Build the package
+        uv build
+        
+        # (Optional) Run tests if you have them
+        # uv run pytest
 
 # Store the resulting .whl and .tar.gz files
 artifacts:
