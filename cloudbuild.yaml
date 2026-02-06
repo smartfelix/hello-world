@@ -1,0 +1,24 @@
+steps:
+  # Step 1: Install dependencies and run tests
+  # We use the official uv image for speed and reliability
+  - name: 'ghcr.io/astral-sh/uv:latest'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        # Sync dependencies exactly as defined in uv.lock
+        uv sync --frozen
+        # Run tests through uv (this uses the created venv automatically)
+        uv run pytest tests/
+
+  # Step 2: Build the package (Wheel and SDist)
+  - name: 'ghcr.io/astral-sh/uv:latest'
+    entrypoint: 'uv'
+    args: ['build']
+
+# Store the resulting .whl and .tar.gz files
+artifacts:
+  objects:
+    location: 'gs://your-bucket-name/dist/'
+    paths: ['dist/*']
+
