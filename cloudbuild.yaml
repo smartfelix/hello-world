@@ -1,17 +1,14 @@
 steps:
-  - name: 'python:3.12-slim'
+  - name: 'python:3.12'  # Full image has curl pre-installed
     entrypoint: 'sh'
     args:
       - '-c'
       - |
-        # 1. Install curl (required for the installer)
-        apt-get update && apt-get install -y curl ca-certificates
-        
-        # 2. Install uv
+        # 1. Install uv
         curl -LsSf https://astral.sh/uv/install.sh | sh
         
-        # 3. Build using the absolute path to the uv binary
-        /root/.cargo/bin/uv build
+        # 2. Run build using the actual install path found in your logs
+        /builder/home/.local/bin/uv build
 
 # Store the resulting .whl and .tar.gz files
 artifacts:
